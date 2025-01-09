@@ -1,0 +1,32 @@
+import pandas as pd
+
+# Load the property_photos.tsv file
+file_path = '/mnt/data/property_photos.tsv'  # Replace with the correct path if needed
+property_photos = pd.read_csv(file_path, sep='\t')
+
+# Display the first few rows of the dataset
+print("Preview of the property_photos dataset:")
+print(property_photos.head())
+
+# Check for missing values
+missing_values = property_photos.isnull().sum()
+print("\nMissing values in the dataset:")
+print(missing_values)
+
+# Check for duplicates
+duplicates = property_photos.duplicated().sum()
+print(f"\nNumber of duplicate rows: {duplicates}")
+
+# Drop duplicates if any
+if duplicates > 0:
+    property_photos.drop_duplicates(inplace=True)
+    print("Duplicate rows dropped.")
+
+# Verify the data structure
+print("\nDataset Information:")
+print(property_photos.info())
+
+# Export cleaned dataset
+output_path = '/mnt/data/cleaned_property_photos.csv'
+property_photos.to_csv(output_path, index=False)
+print(f"\nCleaned dataset saved to {output_path}")
