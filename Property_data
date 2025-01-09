@@ -1,0 +1,60 @@
+import pandas as pd
+import glob
+
+# Step 1: Load and Merge Data
+path = "/mnt/data/"  # Directory where all CSV files are located
+all_files = glob.glob(path + "*.csv")
+
+dataframes = []
+for file in all_files:
+    df = pd.read_csv(file)
+    dataframes.append(df)
+
+# Combine all data into a single DataFrame
+data = pd.concat(dataframes, ignore_index=True)
+
+# Step 2: Data Cleaning
+# Handle missing values
+for col in data.columns:
+    if data[col].dtype == 'object':
+        data[col].fillna("Unknown", inplace=True)
+    else:
+        data[col].fillna(data[col].median(), inplace=True)
+
+# Convert activation_date to datetime
+data['activation_date'] = pd.to_datetime(data['activation_date'], errors='coerce')
+
+# Ensure numerical columns are properly formatted
+numerical_cols = ['bathroom', 'floor', 'total_floor', 'property_age', 'property_size', 'rent', 'deposit']
+data[numerical_cols] = data[numerical_cols].apply(pd.to_numeric, errors='coerce')
+
+# Step 3: Remove duplicate entries
+data.drop_duplicates(subset='property_id', inplace=True)
+
+# Step 4: Save Cleaned Data
+cleaned_path = "/mnt/data/cleaned_property_data.csv"
+data.to_csv(cleaned_path, index=False)
+
+print(f"Cleaned data saved to {cleaned_path}")
+
+
+
+
+# Drop duplicates if any
+if duplicates > 0:
+    property_photos.drop_duplicates(inplace=True)
+    print("Duplicate rows dropped.")
+
+# Verify the data structure
+print("\nDataset Information:")
+print(property_photos.info())
+
+# Export cleaned dataset
+output_path = '/mnt/data/cleaned_property_photos.csv'
+property_photos.to_csv(output_path, index=False)
+print(f"\nCleaned dataset saved to {output_path}")
+
+
+
+
+
