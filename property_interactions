@@ -1,0 +1,32 @@
+import pandas as pd
+
+# Load the property_interactions.tsv file
+file_path = '/mnt/data/property_interactions.tsv'  # Replace with the correct path if needed
+property_interactions = pd.read_csv(file_path, sep='\t')
+
+# Display the first few rows of the dataset
+print("Preview of the property_interactions dataset:")
+print(property_interactions.head())
+
+# Check for missing values
+missing_values = property_interactions.isnull().sum()
+print("\nMissing values in the dataset:")
+print(missing_values)
+
+# Check for duplicates
+duplicates = property_interactions.duplicated().sum()
+print(f"\nNumber of duplicate rows: {duplicates}")
+
+# Drop duplicates if any
+if duplicates > 0:
+    property_interactions.drop_duplicates(inplace=True)
+    print("Duplicate rows dropped.")
+
+# Verify the data structure
+print("\nDataset Information:")
+print(property_interactions.info())
+
+# Export cleaned dataset
+output_path = '/mnt/data/cleaned_property_interactions.csv'
+property_interactions.to_csv(output_path, index=False)
+print(f"\nCleaned dataset saved to {output_path}")
