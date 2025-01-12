@@ -1,6 +1,6 @@
 import pandas as pd
 
-# Load the property_interactions.tsv file
+## Load the property_interactions.tsv file
 file_path = '/mnt/data/property_interactions.tsv'  # Replace with the correct path if needed
 property_interactions = pd.read_csv(file_path, sep='\t')
 
